@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "991602554052",
+    "project_id": "e-commerce-572c9",
+    "storage_bucket": "e-commerce-572c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991602554052:android:41d72ab5797cd9c8aec591",
+        "android_client_info": {
+          "package_name": "com.KhalilDev.e_commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYa9X-SW15IATs0jRB3xRQ7azS4CBhIJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
