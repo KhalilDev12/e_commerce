@@ -6,10 +6,17 @@ import '../../config/theme.dart';
 import '../../data/models/models.dart';
 
 class CartProductCard extends StatelessWidget {
-  final ProductModel product;
-  final int quantity;
+  final ProductCartModel cartProduct;
+  final VoidCallback onIncreaseQuantity;
+  final VoidCallback onDecreaseQuantity;
+  final void Function(bool?)? onCheckProduct;
 
-  CartProductCard({Key? key, required this.product, required this.quantity})
+  CartProductCard(
+      {Key? key,
+      required this.cartProduct,
+      required this.onIncreaseQuantity,
+      required this.onDecreaseQuantity,
+      required this.onCheckProduct})
       : super(key: key);
 
   @override
@@ -19,12 +26,11 @@ class CartProductCard extends StatelessWidget {
       child: Row(
         children: [
           Checkbox(
-            value: false,
-            onChanged: (value) {
-            },
+            value: cartProduct.isSelected,
+            onChanged: onCheckProduct,
           ),
           Image.network(
-            product.imageUrl,
+            cartProduct.product.imageUrl,
             height: 80,
             width: 80,
             fit: BoxFit.fill,
@@ -35,11 +41,11 @@ class CartProductCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.name,
+                  cartProduct.product.name,
                   style: theme().textTheme.displaySmall,
                 ),
                 Text(
-                  "\$${product.price}",
+                  "\$${cartProduct.product.price}",
                   style: theme().textTheme.bodyLarge,
                 )
               ],
@@ -51,19 +57,12 @@ class CartProductCard extends StatelessWidget {
               return Row(
                 children: [
                   IconButton(
-                      onPressed: () {
-                        context
-                            .read<CartBloc>()
-                            .add(RemoveCartProduct(product));
-                      },
+                      onPressed: onDecreaseQuantity,
                       icon: const Icon(Icons.remove_circle)),
-                  Text("$quantity", style: theme().textTheme.displaySmall),
+                  Text("${cartProduct.quantity}",
+                      style: theme().textTheme.displaySmall),
                   IconButton(
-                      onPressed: () {
-                        context
-                            .read<CartBloc>()
-                            .add(AddCartProduct(product));
-                      },
+                      onPressed: onIncreaseQuantity,
                       icon: const Icon(Icons.add_circle)),
                 ],
               );

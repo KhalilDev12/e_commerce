@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/business_logic/blocs/cart/cart_bloc.dart';
 import 'package:e_commerce/business_logic/blocs/wishlist/wishlist_bloc.dart';
 import 'package:e_commerce/data/models/models.dart';
-import 'package:e_commerce/data/models/product_cart_model.dart';
 import 'package:e_commerce/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,7 +154,8 @@ class ProductScreen extends StatelessWidget {
                     backgroundColor: Colors.white),
                 onPressed: () {
                   // Add Product to Cart
-                  context.read<CartBloc>().add(AddCartProduct(product));
+                  context.read<CartBloc>().add(AddCartProduct(
+                      ProductCartModel(product: product, quantity: 1)));
                   const snackBar = SnackBar(
                     content: Text("Product Added to Cart"),
                   );

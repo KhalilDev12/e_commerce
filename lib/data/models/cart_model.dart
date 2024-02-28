@@ -2,18 +2,24 @@ import 'package:e_commerce/data/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 class CartModel extends Equatable {
-  final List<ProductModel> cartProducts;
+  final List<ProductCartModel> cartProducts;
 
-  const CartModel({this.cartProducts = const <ProductModel>[]});
+  const CartModel({this.cartProducts = const <ProductCartModel>[]});
 
   // Functions to get Sub Total
-  double get subTotal =>
-      cartProducts.fold(0, (total, currentItem) => total + currentItem.price);
 
-  String get subTotalString => subTotal.toStringAsFixed(2);
+  double get subTotal {
+    double subTotal = 0;
+    cartProducts.forEach((cartProduct) {
+      if (cartProduct.isSelected) {
+        subTotal = subTotal + cartProduct.quantity * cartProduct.product.price;
+      }
+    });
+    return subTotal;
+  }
 
   // Functions to get Delivery Fee
-  double deliveryFee(subTotal) {
+  double deliveryFee() {
     if (subTotal >= 20) {
       return 0;
     } else {
@@ -21,7 +27,7 @@ class CartModel extends Equatable {
     }
   }
 
-  String get deliveryFeeString => deliveryFee(subTotal).toStringAsFixed(2);
+  String get deliveryFeeString => deliveryFee().toStringAsFixed(2);
 
   // Function to get free Delivery Message
   String freeDeliveryMessage() {
@@ -49,7 +55,7 @@ class CartModel extends Equatable {
   }
 
   // Functions to get Total Fee
-  double get total => subTotal + deliveryFee(subTotal);
+  double get total => subTotal + deliveryFee();
 
   String get totalString => total.toStringAsFixed(2);
 

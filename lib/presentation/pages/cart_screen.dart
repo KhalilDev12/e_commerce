@@ -16,6 +16,9 @@ class CartScreen extends StatelessWidget {
           if (state is CartLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CartLoaded) {
+            if (state.cart.cartProducts.isEmpty) {
+              return const Center(child: Text('Your cart is empty.'));
+            }
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -49,16 +52,21 @@ class CartScreen extends StatelessWidget {
                       SizedBox(
                         height: 250,
                         child: ListView.builder(
-                          itemCount: state.cart
-                              .productQuantity(state.cart.cartProducts)
-                              .keys
-                              .length,
+                          itemCount: state.cart.cartProducts.length,
                           itemBuilder: (context, index) {
+                            final product = state.cart.cartProducts[index];
                             return CartProductCard(
-                              product: state.cart.productQuantity(state.cart.cartProducts).keys.elementAt(
-                                  index),
-                              quantity:state.cart.productQuantity(state.cart.cartProducts).values.elementAt(
-                                  index));
+                              onIncreaseQuantity: () => context
+                                  .read<CartBloc>()
+                                  .add(IncreaseCartItemQuantity(product)),
+                              onDecreaseQuantity: () => context
+                                  .read<CartBloc>()
+                                  .add(DecreaseCartItemQuantity(product)),
+                              onCheckProduct: (p0) => context
+                                  .read<CartBloc>()
+                                  .add(CheckProduct(product)),
+                              cartProduct: product,
+                            );
                           },
                         ),
                       ),
@@ -80,7 +88,7 @@ class CartScreen extends StatelessWidget {
                                   style: theme().textTheme.displaySmall,
                                 ),
                                 Text(
-                                  "\$${state.cart.subTotalString}",
+                                  "\$${state.cart.subTotal.toStringAsFixed(2)}",
                                   style: theme().textTheme.displaySmall,
                                 )
                               ],
@@ -107,27 +115,21 @@ class CartScreen extends StatelessWidget {
                       Stack(
                         children: [
                           Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            width: MediaQuery.of(context).size.width,
                             height: 60,
                             color: Colors.grey,
                           ),
                           Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            width: MediaQuery.of(context).size.width,
                             height: 50,
                             margin: const EdgeInsets.all(5),
                             color: Colors.black,
                             child: Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 20.0),
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "TOTAL",
@@ -179,10 +181,7 @@ class CartScreen extends StatelessWidget {
             onPressed: () {},
             child: Text(
               "GO TO CHECKOUT",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .displaySmall,
+              style: Theme.of(context).textTheme.displaySmall,
             ),
           )
         ],

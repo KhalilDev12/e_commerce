@@ -14,40 +14,116 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<StartCart>(_onLoadCart);
     on<AddCartProduct>(_onAddProduct);
     on<RemoveCartProduct>(_onRemoveProduct);
+    on<IncreaseCartItemQuantity>(_onIncreaseQuantity);
+    on<DecreaseCartItemQuantity>(_onDecreaseQuantity);
+    on<CheckProduct>(_onCheckProduct);
   }
 
   Future<void> _onLoadCart(StartCart event, Emitter<CartState> emit) async {
-    emit(CartLoading());
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      emit(const CartLoaded());
-    } catch (_) {}
+    // Implement cart loading logic and emit CartLoaded state
+    emit(const CartLoaded()); // Replace with actual cart data
   }
 
   void _onAddProduct(AddCartProduct event, Emitter<CartState> emit) async {
     final state = this.state as CartLoaded;
-    try {
+    final existingIndex = state.cart.cartProducts
+        .indexWhere((p) => p.product == event.cartProduct.product);
+
+    if (existingIndex != -1) {
+      // Product already exists, increase quantity
       emit(
         CartLoaded(
-            cart: CartModel(
-                cartProducts: List.from(state.cart.cartProducts)
-                  ..add(event.product))),
+          cart: CartModel(
+            cartProducts: List.of(state.cart.cartProducts)
+              ..[existingIndex] =
+                  state.cart.cartProducts[existingIndex].copyWith(
+                quantity: state.cart.cartProducts[existingIndex].quantity + 1,
+              ),
+          ),
+        ),
       );
-    } catch (_) {}
+    } else {
+      // Add new product to cart
+      emit(
+        CartLoaded(
+          cart: CartModel(
+              cartProducts: List.of(state.cart.cartProducts)
+                ..add(event.cartProduct)),
+        ),
+      );
+    }
   }
 
   void _onRemoveProduct(
       RemoveCartProduct event, Emitter<CartState> emit) async {
     final state = this.state as CartLoaded;
-    try {
+    final index = state.cart.cartProducts.indexOf(event.cartProduct);
+
+    if (index != -1) {
       emit(
         CartLoaded(
           cart: CartModel(
-            cartProducts: List.from(state.cart.cartProducts)
-              ..remove(event.product),
-          ),
+              cartProducts: List.of(state.cart.cartProducts)..removeAt(index)),
         ),
       );
-    } catch (_) {}
+    }
+  }
+
+  void _onIncreaseQuantity(
+      IncreaseCartItemQuantity event, Emitter<CartState> emit) async {
+    final state = this.state as CartLoaded;
+    final index = state.cart.cartProducts.indexOf(event.cartProduct);
+    if (index != -1) {
+      emit(
+        CartLoaded(
+            cart: CartModel(
+          cartProducts: List.of(state.cart.cartProducts)
+            ..[index] = state.cart.cartProducts[index].copyWith(
+              quantity: state.cart.cartProducts[index].quantity + 1,
+            ),
+        )),
+      );
+    }
+  }
+
+  void _onDecreaseQuantity(
+      DecreaseCartItemQuantity event, Emitter<CartState> emit) async {
+    final state = this.state as CartLoaded;
+    final index = state.cart.cartProducts.indexOf(event.cartProduct);
+
+    if (index != -1 && state.cart.cartProducts[index].quantity > 1) {
+      emit(
+        CartLoaded(
+            cart: CartModel(
+          cartProducts: List.of(state.cart.cartProducts)
+            ..[index] = state.cart.cartProducts[index].copyWith(
+              quantity: state.cart.cartProducts[index].quantity - 1,
+            ),
+        )),
+      );
+    } else if (state.cart.cartProducts[index].quantity == 1) {
+      emit(
+        CartLoaded(
+          cart: CartModel(
+              cartProducts: List.of(state.cart.cartProducts)..removeAt(index)),
+        ),
+      );
+    }
+  }
+
+  void _onCheckProduct(CheckProduct event, Emitter<CartState> emit) async {
+    final state = this.state as CartLoaded;
+    final index = state.cart.cartProducts.indexOf(event.cartProduct);
+    if (index != -1) {
+      emit(
+        CartLoaded(
+            cart: CartModel(
+          cartProducts: List.of(state.cart.cartProducts)
+            ..[index] = state.cart.cartProducts[index].copyWith(
+              isSelected: !state.cart.cartProducts[index].isSelected,
+            ),
+        )),
+      );
+    }
   }
 }
