@@ -14,9 +14,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<StartCart>(_onLoadCart);
     on<AddCartProduct>(_onAddProduct);
     on<RemoveCartProduct>(_onRemoveProduct);
-    on<IncreaseCartItemQuantity>(_onIncreaseQuantity);
-    on<DecreaseCartItemQuantity>(_onDecreaseQuantity);
     on<CheckProduct>(_onCheckProduct);
+    on<CheckAllProduct>(_onCheckAllProduct);
   }
 
   Future<void> _onLoadCart(StartCart event, Emitter<CartState> emit) async {
@@ -28,7 +27,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final state = this.state as CartLoaded;
     final existingIndex = state.cart.cartProducts
         .indexWhere((p) => p.product == event.cartProduct.product);
-
     if (existingIndex != -1) {
       // Product already exists, increase quantity
       emit(
@@ -56,38 +54,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   void _onRemoveProduct(
       RemoveCartProduct event, Emitter<CartState> emit) async {
-    final state = this.state as CartLoaded;
-    final index = state.cart.cartProducts.indexOf(event.cartProduct);
-
-    if (index != -1) {
-      emit(
-        CartLoaded(
-          cart: CartModel(
-              cartProducts: List.of(state.cart.cartProducts)..removeAt(index)),
-        ),
-      );
-    }
-  }
-
-  void _onIncreaseQuantity(
-      IncreaseCartItemQuantity event, Emitter<CartState> emit) async {
-    final state = this.state as CartLoaded;
-    final index = state.cart.cartProducts.indexOf(event.cartProduct);
-    if (index != -1) {
-      emit(
-        CartLoaded(
-            cart: CartModel(
-          cartProducts: List.of(state.cart.cartProducts)
-            ..[index] = state.cart.cartProducts[index].copyWith(
-              quantity: state.cart.cartProducts[index].quantity + 1,
-            ),
-        )),
-      );
-    }
-  }
-
-  void _onDecreaseQuantity(
-      DecreaseCartItemQuantity event, Emitter<CartState> emit) async {
     final state = this.state as CartLoaded;
     final index = state.cart.cartProducts.indexOf(event.cartProduct);
 
@@ -125,5 +91,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         )),
       );
     }
+  }
+
+  void _onCheckAllProduct(
+      CheckAllProduct event, Emitter<CartState> emit) async {
+    final state = this.state as CartLoaded;
+    emit(
+      CartLoaded(
+        cart: CartModel(
+            cartProducts: state.cart.cartProducts
+                .map((product) =>
+                    product.copyWith(isSelected: event.selectedAll))
+                .toList()),
+      ),
+    );
   }
 }

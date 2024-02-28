@@ -7,7 +7,6 @@ class CartModel extends Equatable {
   const CartModel({this.cartProducts = const <ProductCartModel>[]});
 
   // Functions to get Sub Total
-
   double get subTotal {
     double subTotal = 0;
     cartProducts.forEach((cartProduct) {
@@ -39,25 +38,23 @@ class CartModel extends Equatable {
     }
   }
 
-  // Function to change quantity of each item
-  Map productQuantity(List<ProductModel> products) {
-    var quantity = {};
-    products.forEach(
-      (product) {
-        if (!quantity.containsKey(product)) {
-          quantity[product] = 1;
-        } else {
-          quantity[product] += 1;
-        }
-      },
-    );
-    return quantity;
-  }
-
   // Functions to get Total Fee
   double get total => subTotal + deliveryFee();
 
   String get totalString => total.toStringAsFixed(2);
+
+  // Function to check if all items selected
+  bool get isSelectedAll {
+    bool test = false;
+    cartProducts.forEach((product) {
+      if (product.isSelected) {
+        test = true;
+      } else {
+        test = false;
+      }
+    });
+    return test;
+  }
 
   @override
   List<Object?> get props => [cartProducts];

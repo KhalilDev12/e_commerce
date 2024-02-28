@@ -58,10 +58,10 @@ class CartScreen extends StatelessWidget {
                             return CartProductCard(
                               onIncreaseQuantity: () => context
                                   .read<CartBloc>()
-                                  .add(IncreaseCartItemQuantity(product)),
+                                  .add(AddCartProduct(product)),
                               onDecreaseQuantity: () => context
                                   .read<CartBloc>()
-                                  .add(DecreaseCartItemQuantity(product)),
+                                  .add(RemoveCartProduct(product)),
                               onCheckProduct: (p0) => context
                                   .read<CartBloc>()
                                   .add(CheckProduct(product)),
@@ -171,8 +171,32 @@ class CartScreen extends StatelessWidget {
       height: 70,
       color: Colors.black,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Row(
+            children: [
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoaded) {
+                    return Checkbox(
+                      value: state.cart.cartProducts.isNotEmpty &&
+                          state.cart.cartProducts.every((p) => p.isSelected),
+                      onChanged: (value) => context
+                          .read<CartBloc>()
+                          .add(CheckAllProduct(value!)),
+                    );
+                  } else {
+                    return Center();
+                  }
+                },
+              ),
+              Text("All",
+                  style: theme()
+                      .textTheme
+                      .displaySmall!
+                      .copyWith(color: Colors.white)),
+            ],
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
