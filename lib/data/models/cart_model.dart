@@ -43,19 +43,6 @@ class CartModel extends Equatable {
 
   String get totalString => total.toStringAsFixed(2);
 
-  // Function to check if all items selected
-  bool get isSelectedAll {
-    bool test = false;
-    cartProducts.forEach((product) {
-      if (product.isSelected) {
-        test = true;
-      } else {
-        test = false;
-      }
-    });
-    return test;
-  }
-
   @override
   List<Object?> get props => [cartProducts];
 }

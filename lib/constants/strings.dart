@@ -5,3 +5,4 @@ const String userScreen = "/user";
 const String catalogScreen = "/catalog";
 const String wishlistScreen = "/wishlist";
 const String productScreen = "/product";
+const String checkoutScreen = "/checkout";

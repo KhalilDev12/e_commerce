@@ -1,4 +1,5 @@
 import 'package:e_commerce/business_logic/blocs/cart/cart_bloc.dart';
+import 'package:e_commerce/constants/strings.dart';
 import 'package:e_commerce/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,87 +73,7 @@ class CartScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      const Divider(thickness: 2),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "SUBTOTAL",
-                                  style: theme().textTheme.displaySmall,
-                                ),
-                                Text(
-                                  "\$${state.cart.subTotal.toStringAsFixed(2)}",
-                                  style: theme().textTheme.displaySmall,
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "DELIVERY FEE",
-                                  style: theme().textTheme.displaySmall,
-                                ),
-                                Text(
-                                  "\$${state.cart.deliveryFeeString}",
-                                  style: theme().textTheme.displaySmall,
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 60,
-                            color: Colors.grey,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            margin: const EdgeInsets.all(5),
-                            color: Colors.black,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "TOTAL",
-                                    style: theme()
-                                        .textTheme
-                                        .displaySmall!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "\$${state.cart.totalString}",
-                                    style: theme()
-                                        .textTheme
-                                        .displaySmall!
-                                        .copyWith(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )
+                  OrderSumarryWidget(),
                 ],
               ),
             );
@@ -181,9 +102,8 @@ class CartScreen extends StatelessWidget {
                     return Checkbox(
                       value: state.cart.cartProducts.isNotEmpty &&
                           state.cart.cartProducts.every((p) => p.isSelected),
-                      onChanged: (value) => context
-                          .read<CartBloc>()
-                          .add(CheckAllProduct(value!)),
+                      onChanged: (value) =>
+                          context.read<CartBloc>().add(CheckAllProduct(value!)),
                     );
                   } else {
                     return Center();
@@ -197,16 +117,26 @@ class CartScreen extends StatelessWidget {
                       .copyWith(color: Colors.white)),
             ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                backgroundColor: Colors.white),
-            onPressed: () {},
-            child: Text(
-              "GO TO CHECKOUT",
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              if (state is CartLoaded) {
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      backgroundColor: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(checkoutScreen);
+                  },
+                  child: Text(
+                    "GO TO CHECKOUT",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                );
+              } else {
+                return Center();
+              }
+            },
           )
         ],
       ),

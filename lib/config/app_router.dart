@@ -40,6 +40,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => WishlistScreen(),
         );
+      case checkoutScreen:
+        return MaterialPageRoute(
+          builder: (context) => CheckoutScreen(),
+        );
       default:
         return _errorRoute();
     }
