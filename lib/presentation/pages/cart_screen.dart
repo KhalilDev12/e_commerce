@@ -57,15 +57,18 @@ class CartScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final product = state.cart.cartProducts[index];
                             return CartProductCard(
-                              onIncreaseQuantity: () => context
-                                  .read<CartBloc>()
-                                  .add(AddCartProduct(product)),
-                              onDecreaseQuantity: () => context
-                                  .read<CartBloc>()
-                                  .add(RemoveCartProduct(product)),
-                              onCheckProduct: (p0) => context
-                                  .read<CartBloc>()
-                                  .add(CheckProduct(product)),
+                              onIncreaseQuantity: () =>
+                                  context
+                                      .read<CartBloc>()
+                                      .add(AddCartProduct(product)),
+                              onDecreaseQuantity: () =>
+                                  context
+                                      .read<CartBloc>()
+                                      .add(RemoveCartProduct(product)),
+                              onCheckProduct: (p0) =>
+                                  context
+                                      .read<CartBloc>()
+                                      .add(CheckProduct(product)),
                               cartProduct: product,
                             );
                           },
@@ -119,6 +122,9 @@ class CartScreen extends StatelessWidget {
           ),
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
+              if (state is CartLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
               if (state is CartLoaded) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -130,7 +136,10 @@ class CartScreen extends StatelessWidget {
                   },
                   child: Text(
                     "GO TO CHECKOUT",
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .displaySmall,
                   ),
                 );
               } else {

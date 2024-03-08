@@ -17,6 +17,8 @@ class CartModel extends Equatable {
     return subTotal;
   }
 
+  String get subTotalString => subTotal.toStringAsFixed(2);
+
   // Functions to get Delivery Fee
   double deliveryFee() {
     if (subTotal >= 20) {
@@ -42,6 +44,10 @@ class CartModel extends Equatable {
   double get total => subTotal + deliveryFee();
 
   String get totalString => total.toStringAsFixed(2);
+
+  List<ProductCartModel> selectedCartProducts() {
+    return cartProducts.where((product) => product.isSelected).toList();
+  }
 
   @override
   List<Object?> get props => [cartProducts];

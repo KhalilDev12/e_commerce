@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/category/category_bloc.dart';
 import '../../business_logic/blocs/product/product_bloc.dart';
-import '../../data/models/models.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

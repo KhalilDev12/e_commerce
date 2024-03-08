@@ -1,10 +1,12 @@
 import 'package:e_commerce/business_logic/blocs/cart/cart_bloc.dart';
 import 'package:e_commerce/business_logic/blocs/category/category_bloc.dart';
+import 'package:e_commerce/business_logic/blocs/checkout/checkout_bloc.dart';
 import 'package:e_commerce/business_logic/blocs/product/product_bloc.dart';
 import 'package:e_commerce/business_logic/blocs/wishlist/wishlist_bloc.dart';
 import 'package:e_commerce/config/app_router.dart';
 import 'package:e_commerce/config/theme.dart';
 import 'package:e_commerce/data/repositories/category_repository.dart';
+import 'package:e_commerce/data/repositories/checkout_repository.dart';
 import 'package:e_commerce/data/repositories/product_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,13 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductBloc(
             productRepository: ProductRepository(),
           )..add(LoadProducts()),
-        )
+        ),
+        BlocProvider(
+          create: (context) => CheckoutBloc(
+            cartBloc: context.read<CartBloc>(),
+            checkoutRepository: CheckoutRepository(),
+          ),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

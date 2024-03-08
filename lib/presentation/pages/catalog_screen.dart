@@ -37,7 +37,7 @@ class CatalogScreen extends StatelessWidget {
               },
             );
           } else {
-            return const Center(child: Text("Something happend"));
+            return const Center(child: Text("Something happen"));
           }
         },
       ),
