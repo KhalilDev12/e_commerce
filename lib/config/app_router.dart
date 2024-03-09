@@ -1,7 +1,7 @@
-
+import 'package:e_commerce/constants/strings.dart';
+import 'package:e_commerce/presentation/pages/order_confirmation_screen.dart';
 import 'package:e_commerce/presentation/pages/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce/constants/strings.dart';
 
 import '../data/models/models.dart';
 
@@ -43,6 +43,10 @@ class AppRouter {
       case checkoutScreen:
         return MaterialPageRoute(
           builder: (context) => CheckoutScreen(),
+        );
+      case orderConfirmationScreen:
+        return MaterialPageRoute(
+          builder: (context) => OrderConfirmationScreen(),
         );
       default:
         return _errorRoute();

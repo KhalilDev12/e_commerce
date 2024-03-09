@@ -1,5 +1,4 @@
 import 'package:e_commerce/config/theme.dart';
-import 'package:e_commerce/data/repositories/category_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/strings.dart';

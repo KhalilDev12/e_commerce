@@ -53,7 +53,7 @@ class CheckoutModel extends Equatable {
     return {
       "customerAddress": customerAddress,
       "customerName": customerName!,
-      "customerEmail": customerAddress,
+      "customerEmail": customerEmail!,
       "items": items,
       "deliveryFee": deliveryFee!,
       "subTotal": subTotal!,

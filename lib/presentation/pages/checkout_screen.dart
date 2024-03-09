@@ -1,4 +1,5 @@
 import 'package:e_commerce/config/theme.dart';
+import 'package:e_commerce/constants/strings.dart';
 import 'package:e_commerce/presentation/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,9 +100,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         borderRadius: BorderRadius.circular(8)),
                     backgroundColor: Colors.white),
                 onPressed: () {
-                  context
-                      .read<CheckoutBloc>()
-                      .add(ConfirmCheckout(checkout: state.checkoutModel));
+                  // context
+                  //     .read<CheckoutBloc>()
+                  //     .add(ConfirmCheckout(checkout: state.checkoutModel));
+                  Navigator.pushNamed(context, orderConfirmationScreen);
                 },
                 child: Text(
                   "ORDER",
