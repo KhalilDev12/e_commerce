@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: "Zero to unicorn"),
-      bottomNavigationBar: const CustomNavBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -28,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                       ..where((product) => product.isRecommended).toList(),
                   );
                 } else {
-                  return const Center(child: Text("Something happend"));
+                  return const Center(child: Text("Something happen"));
                 }
               },
             ),

@@ -18,7 +18,7 @@ TextTheme textTheme() {
     ),
     displayMedium: TextStyle(
       color: Colors.black,
-      fontSize: 21,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
     displaySmall: TextStyle(

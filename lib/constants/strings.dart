@@ -1,4 +1,5 @@
 const String splashScreen = "/";
+const String mainScreen = "/main";
 const String homeScreen = "/home";
 const String cartScreen = "/cart";
 const String userScreen = "/user";

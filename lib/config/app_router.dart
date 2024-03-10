@@ -1,4 +1,5 @@
 import 'package:e_commerce/constants/strings.dart';
+import 'package:e_commerce/presentation/pages/main_screen.dart';
 import 'package:e_commerce/presentation/pages/order_confirmation_screen.dart';
 import 'package:e_commerce/presentation/pages/screens.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,10 @@ class AppRouter {
       case splashScreen:
         return MaterialPageRoute(
           builder: (context) => SplashScreen(),
+        );
+      case mainScreen:
+        return MaterialPageRoute(
+          builder: (context) => MainScreen(),
         );
       case homeScreen:
         return MaterialPageRoute(

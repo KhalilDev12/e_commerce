@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3))
-        .then((value) => Navigator.pushReplacementNamed(context, homeScreen));
+        .then((value) => Navigator.pushReplacementNamed(context, mainScreen));
   }
 
   @override
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           color: Colors.black,
           child: Text(
             "Zero to unicorn",

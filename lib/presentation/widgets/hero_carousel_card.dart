@@ -21,8 +21,7 @@ class HeroCarouselCard extends StatelessWidget {
       onTap: () {
         if (product == null) {
           // if the product argument is null go to catalog page
-          Navigator.pushNamed(
-            context,
+          Navigator.of(context,rootNavigator: true).pushNamed(
             catalogScreen,
             arguments: category,
           );

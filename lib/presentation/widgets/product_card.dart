@@ -19,7 +19,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, productScreen, arguments: product);
+        Navigator.of(context,rootNavigator: true).pushNamed(productScreen, arguments: product);
       },
       child: Stack(
         children: [
